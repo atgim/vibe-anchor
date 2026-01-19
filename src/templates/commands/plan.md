@@ -10,14 +10,6 @@ description: 기술 계획 수립
 
 ```
 /plan
-/plan {기술 스택 힌트}
-```
-
-예시:
-```
-/plan                           # 기술 선택부터 시작
-/plan React + TypeScript        # 기술 스택 힌트 제공
-/plan 기존 인증 시스템 활용     # 제약 조건 명시
 ```
 
 ## 프로세스
@@ -30,24 +22,71 @@ description: 기술 계획 수립
 - Non-Functional Requirements
 - 결정된 사항 (clarifications.md)
 
-### 2. 기술 결정
+### 2. 기술 스택 결정 (선택지 + 비교 제공)
 
-다음을 질문:
+**중요: 비개발자도 이해할 수 있도록 각 선택지의 장단점을 명확히 비교해야 합니다.**
 
-1. **언어/프레임워크**: "사용할 언어와 프레임워크는?"
-   - 예: TypeScript + React, Python + FastAPI
+#### 질문 1: 프로젝트 유형
+```
+어떤 종류의 프로젝트인가요?
 
-2. **데이터 저장**: "데이터를 어떻게 저장하나요?"
-   - 예: PostgreSQL, SQLite, localStorage
+1. 웹사이트/웹앱 (추천)
+   - 브라우저에서 실행
+   - 별도 설치 없이 URL로 접근
 
-3. **외부 의존성**: "사용할 외부 라이브러리/서비스는?"
-   - 예: Auth0, Stripe, AWS S3
+2. 모바일 앱
+   - 스마트폰에 설치
+   - 앱스토어 배포 필요
+
+3. 데스크톱 프로그램
+   - PC에 설치하는 프로그램
+
+4. 잘 모르겠음 → 웹사이트로 진행
+```
+
+#### 질문 2: 웹 프레임워크 (웹 선택 시)
+```
+웹 프레임워크를 선택해주세요:
+
+1. React (추천)
+   - 장점: 자료가 가장 많음, AI가 가장 잘 도와줄 수 있음
+   - 단점: 초기 개념이 약간 복잡함
+
+2. Vue
+   - 장점: 문법이 직관적, 배우기 쉬움
+   - 단점: React보다 참고 자료 적음
+
+3. 순수 HTML/CSS/JS
+   - 장점: 가장 단순, 프레임워크 학습 불필요
+   - 단점: 복잡한 기능 구현이 어려움
+
+4. 잘 모르겠음 → React로 진행
+```
+
+#### 질문 3: 데이터 저장
+```
+데이터를 어디에 저장할까요?
+
+1. 브라우저 저장소 (추천 - MVP용)
+   - 장점: 서버 없이 바로 사용 가능, 무료
+   - 단점: 다른 기기에서 접근 불가, 브라우저 삭제 시 데이터 손실
+
+2. 클라우드 DB (Supabase/Firebase)
+   - 장점: 어디서든 접근, 데이터 안전
+   - 단점: 초기 설정 필요, 사용량 따라 비용 발생
+
+3. 잘 모르겠음 → 브라우저 저장소로 시작
+```
 
 ### 3. 아키텍처 설계
 
-- 컴포넌트 구조
-- 데이터 흐름
-- API 설계 (필요시)
+기술 스택 결정 후:
+- 폴더 구조 제안
+- 주요 컴포넌트 설계
+- 데이터 흐름 설계
+
+**코딩 스타일은 해당 언어/프레임워크의 표준 컨벤션을 자동 적용합니다.**
+(사용자가 별도 요청 시에만 변경)
 
 ### 4. 파일 생성
 
@@ -63,68 +102,49 @@ description: 기술 계획 수립
 - 생성일: {date}
 
 ## 기술 스택
-- 언어: TypeScript
-- 프레임워크: React 18
-- 상태 관리: Zustand
-- API: REST
+- 유형: 웹앱
+- 프레임워크: React 18 + TypeScript
+- 스타일링: Tailwind CSS
+- 데이터 저장: localStorage (MVP)
 
-## 아키텍처
-
-### 컴포넌트 구조
+## 폴더 구조
 ```
 src/
-├── components/
+├── components/     # UI 컴포넌트
 │   └── LoginForm/
-├── hooks/
+├── hooks/          # 재사용 로직
 │   └── useAuth.ts
-├── services/
+├── services/       # 외부 연동
 │   └── authService.ts
-└── types/
+└── types/          # 타입 정의
     └── auth.ts
 ```
 
-### 데이터 흐름
+## 주요 컴포넌트
+| 컴포넌트 | 역할 |
+|----------|------|
+| LoginForm | 로그인 폼 UI |
+| useAuth | 인증 상태 관리 |
+| authService | API 호출 |
+
+## 데이터 흐름
 ```
-User → LoginForm → useAuth → authService → API
-                                    ↓
-                              Token 저장 (httpOnly)
-```
-
-## 데이터 모델
-
-### 엔티티
-| 엔티티 | 설명 | 주요 필드 |
-|--------|------|-----------|
-| User | 사용자 | id, email, name |
-| Session | 세션 | id, userId, token, expiresAt |
-
-## API 설계
-
-### 엔드포인트
-| Method | Path | 설명 |
-|--------|------|------|
-| POST | /auth/login | 로그인 |
-| POST | /auth/logout | 로그아웃 |
-| GET | /auth/me | 현재 사용자 |
-
-## 의존성
-- bcrypt: 비밀번호 해싱
-- jsonwebtoken: JWT 생성/검증
-
-## 리스크 & 대응
-| 리스크 | 영향 | 대응 |
-|--------|------|------|
-| 토큰 탈취 | 높음 | httpOnly + SameSite |
+사용자 입력 → LoginForm → useAuth → authService → 저장소
 ```
 
-## Constitution 검증
+## 코딩 스타일
+- React/TypeScript 표준 컨벤션 적용
+- Prettier 자동 포맷팅
+```
 
-계획이 프로젝트 원칙(Constitution)을 따르는지 확인:
+## 프로젝트 원칙 검증
+
+계획이 프로젝트 원칙을 따르는지 확인:
 
 ```
 ✅ TDD 원칙: 테스트 먼저 작성 예정
-✅ 보안 원칙: httpOnly 쿠키 사용
-⚠️ 라이브러리 최소화: bcrypt, jwt만 사용 (정당화됨)
+✅ 단순함 우선: 최소한의 라이브러리만 사용
+✅ 점진적 개발: Phase별로 나눠 구현
 ```
 
 ## 다음 단계
@@ -134,8 +154,8 @@ User → LoginForm → useAuth → authService → API
 ## 완료 조건
 
 - [ ] spec.md 분석 완료
-- [ ] 기술 스택 결정
+- [ ] 기술 스택 결정 (선택지 비교 제공)
 - [ ] 아키텍처 설계
 - [ ] plan.md 생성
-- [ ] Constitution 검증
+- [ ] 프로젝트 원칙 검증
 - [ ] `/tasks` 안내
