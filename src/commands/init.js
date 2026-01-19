@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs');
-const { ensureDir, writeFileIfNotExists, writeFile, today } = require('../utils/file');
+const { ensureDir, writeFileIfNotExists, today } = require('../utils/file');
 
 // 템플릿 디렉토리 경로
 const TEMPLATES_DIR = path.join(__dirname, '..', 'templates');
@@ -25,10 +25,10 @@ function render(template, vars) {
 }
 
 /**
- * vibe-anchor 초기화
+ * vibe-anchor v0.2 초기화
  */
 async function init(targetDir, projectName) {
-  console.log(`\n🔧 vibe-anchor 초기화 중...\n`);
+  console.log(`\n🔧 vibe-anchor v0.2 초기화 중...\n`);
   console.log(`   프로젝트: ${projectName}`);
   console.log(`   경로: ${targetDir}\n`);
 
@@ -42,61 +42,31 @@ async function init(targetDir, projectName) {
   const commandsDir = path.join(claudeDir, 'commands');
   ensureDir(commandsDir);
 
-  // 2. .vibe-anchor 디렉토리 구조 생성
+  // 2. specs 디렉토리 생성 (SDD 산출물)
+  const specsDir = path.join(targetDir, 'specs');
+  ensureDir(specsDir);
+
+  // 3. .vibe-anchor 디렉토리 구조 생성 (v0.2: 최소화)
   const vibeDir = path.join(targetDir, '.vibe-anchor');
   const dirs = [
-    path.join(vibeDir, 'intents'),
-    path.join(vibeDir, 'constraints'),
-    path.join(vibeDir, 'cycles'),
-    path.join(vibeDir, 'tasks'),
-    path.join(vibeDir, 'sessions')
+    path.join(vibeDir, 'cycles')
   ];
   dirs.forEach(ensureDir);
 
-  // 3. CLAUDE.md 생성
+  // 4. CLAUDE.md 생성
   const claudeMdPath = path.join(claudeDir, 'CLAUDE.md');
   const claudeMdTemplate = loadTemplate('claude.md.hbs');
   const claudeMdCreated = writeFileIfNotExists(claudeMdPath, render(claudeMdTemplate, vars));
   logFile(claudeMdPath, claudeMdCreated);
 
-  // 4. constitution.md 생성
-  const constitutionPath = path.join(vibeDir, 'constitution.md');
-  const constitutionTemplate = loadTemplate('constitution.md.hbs');
-  const constitutionCreated = writeFileIfNotExists(constitutionPath, render(constitutionTemplate, vars));
-  logFile(constitutionPath, constitutionCreated);
-
-  // 5. intents/_index.md 생성
-  const intentsIndexPath = path.join(vibeDir, 'intents', '_index.md');
-  const intentsIndexTemplate = loadTemplate('intents-index.md.hbs');
-  const intentsCreated = writeFileIfNotExists(intentsIndexPath, render(intentsIndexTemplate, vars));
-  logFile(intentsIndexPath, intentsCreated);
-
-  // 6. constraints/global.md 생성
-  const constraintsPath = path.join(vibeDir, 'constraints', 'global.md');
-  const constraintsTemplate = loadTemplate('constraints-global.md.hbs');
-  const constraintsCreated = writeFileIfNotExists(constraintsPath, render(constraintsTemplate, vars));
-  logFile(constraintsPath, constraintsCreated);
-
-  // 7. tasks/backlog.md 생성
-  const backlogPath = path.join(vibeDir, 'tasks', 'backlog.md');
-  const backlogTemplate = loadTemplate('tasks-backlog.md.hbs');
-  const backlogCreated = writeFileIfNotExists(backlogPath, render(backlogTemplate, vars));
-  logFile(backlogPath, backlogCreated);
-
-  // 8. tasks/current.md 생성
-  const currentTaskPath = path.join(vibeDir, 'tasks', 'current.md');
-  const currentTaskTemplate = loadTemplate('tasks-current.md.hbs');
-  const currentTaskCreated = writeFileIfNotExists(currentTaskPath, render(currentTaskTemplate, vars));
-  logFile(currentTaskPath, currentTaskCreated);
-
-  // 9. cycles/current.md 생성
+  // 5. cycles/current.md 생성
   const cyclesPath = path.join(vibeDir, 'cycles', 'current.md');
   const cyclesTemplate = loadTemplate('cycles-current.md.hbs');
   const cyclesCreated = writeFileIfNotExists(cyclesPath, render(cyclesTemplate, vars));
   logFile(cyclesPath, cyclesCreated);
 
-  // 10. slash commands 복사
-  const slashCommands = ['init', 'intent', 'constraint', 'task', 'cycle', 'review', 'status'];
+  // 6. slash commands 복사 (v0.2)
+  const slashCommands = ['init', 'specify', 'clarify', 'plan', 'tasks', 'cycle', 'review', 'status'];
   console.log('\n📝 Slash commands 설치:');
 
   for (const cmd of slashCommands) {
@@ -112,22 +82,25 @@ async function init(targetDir, projectName) {
 
   // 완료 메시지
   console.log(`
-✅ vibe-anchor 초기화 완료!
+✅ vibe-anchor v0.2 초기화 완료!
 
 다음 단계:
-  1. Claude Code에서 /init 실행하여 프로젝트 헌법 작성
-  2. /intent 로 첫 번째 코딩 의도 기록
-  3. /task 로 작은 태스크 정의
-  4. /cycle red → green → refactor → commit 으로 TDD 진행
+  1. Claude Code에서 /init 실행하여 프로젝트 원칙(Constitution) 작성
+  2. /specify 로 첫 번째 기능 명세 작성
+  3. /clarify 로 모호한 부분 해소
+  4. /plan 으로 기술 계획 수립
+  5. /tasks 로 태스크 분해
+  6. /cycle red → green → refactor → commit 으로 TDD 진행
 
 사용 가능한 명령어:
-  /init        프로젝트 헌법 작성
-  /intent      의도 기록
-  /constraint  수정 금지 등록
-  /task        태스크 정의
+  /init        프로젝트 원칙 작성
+  /specify     기능 명세 작성 (SDD)
+  /clarify     모호함 해소
+  /plan        기술 계획 수립
+  /tasks       태스크 분해
   /cycle       TDD 사이클
-  /review      세션 정리
-  /status      현재 상태
+  /review      시행착오 기록 & 수정주의 반영
+  /status      현재 상태 확인
 `);
 }
 
