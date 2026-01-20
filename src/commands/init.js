@@ -28,7 +28,7 @@ function render(template, vars) {
  * vibe-anchor v0.2 초기화
  */
 async function init(targetDir, projectName) {
-  console.log(`\n🔧 vibe-anchor v0.2 초기화 중...\n`);
+  console.log(`\nvibe-anchor v0.2 초기화 중...\n`);
   console.log(`   프로젝트: ${projectName}`);
   console.log(`   경로: ${targetDir}\n`);
 
@@ -67,7 +67,7 @@ async function init(targetDir, projectName) {
 
   // 6. slash commands 복사 (v0.2)
   const slashCommands = ['init', 'specify', 'clarify', 'plan', 'tasks', 'cycle', 'review', 'status'];
-  console.log('\n📝 Slash commands 설치:');
+  console.log('\nSlash commands 설치:');
 
   for (const cmd of slashCommands) {
     const srcPath = path.join(TEMPLATES_DIR, 'commands', `${cmd}.md`);
@@ -82,7 +82,7 @@ async function init(targetDir, projectName) {
 
   // 완료 메시지
   console.log(`
-✅ vibe-anchor v0.2 초기화 완료!
+vibe-anchor v0.2 초기화 완료!
 
 다음 단계:
   1. Claude Code에서 /init 실행하여 프로젝트 원칙(Constitution) 작성
@@ -106,7 +106,7 @@ async function init(targetDir, projectName) {
 
 function logFile(filePath, created, alias = null) {
   const relativePath = path.relative(process.cwd(), filePath);
-  const status = created ? '✅ 생성' : '⏭️  이미 존재';
+  const status = created ? '[생성]' : '[이미 존재]';
   const name = alias ? `${alias} (${relativePath})` : relativePath;
   console.log(`   ${status}: ${name}`);
 }

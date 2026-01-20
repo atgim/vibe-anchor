@@ -101,7 +101,7 @@ description: 기술 계획 수립
 **주석 형식**:
 ```typescript
 /**
- * 📋 설계: specs/{id}-{slug}/plan.md
+ * [설계] specs/{id}-{slug}/plan.md
  *
  * {폴더 설명}
  * - {하위 모듈 1}: {역할}
@@ -114,7 +114,7 @@ description: 기술 계획 수립
 // src/auth/index.ts
 
 /**
- * 📋 설계: specs/001-login/plan.md
+ * [설계] specs/001-login/plan.md
  *
  * 인증 관련 모듈
  * - useAuth: 인증 상태 관리 훅
@@ -189,9 +189,9 @@ src/
 계획이 프로젝트 원칙을 따르는지 확인:
 
 ```
-✅ TDD 원칙: 테스트 먼저 작성 예정
-✅ 단순함 우선: 최소한의 라이브러리만 사용
-✅ 점진적 개발: Phase별로 나눠 구현
+[O] TDD 원칙: 테스트 먼저 작성 예정
+[O] 단순함 우선: 최소한의 라이브러리만 사용
+[O] 점진적 개발: Phase별로 나눠 구현
 ```
 
 ## 다음 단계

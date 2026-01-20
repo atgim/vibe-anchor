@@ -36,7 +36,7 @@ clarifications.md에 기록
     ↓
 CLAUDE.md "수정 주의"에 요약 반영
     ↓
-코드에 ⚠️ 주석 추가
+코드에 [주의] 주석 추가
     ↓
 다음 세션에서 AI가 자동으로 인지
 ```
@@ -100,12 +100,12 @@ CLAUDE.md "수정 주의"에 요약 반영
 
 주석 형식:
 ```
-⚠️ 주의: {이유} (specs/{명세} 참조)
+[주의] {이유} (specs/{명세} 참조)
 ```
 
 예시:
 ```typescript
-// ⚠️ 주의: XSS 방지를 위해 httpOnly 필수 (specs/001-login 참조)
+// [주의] XSS 방지를 위해 httpOnly 필수 (specs/001-login 참조)
 // localStorage 사용 시 토큰 탈취 위험 있음
 const cookie = {
   httpOnly: true,
@@ -144,11 +144,11 @@ const cookie = {
 ## 체크리스트 출력
 
 ```
-📋 리뷰 체크리스트
+리뷰 체크리스트
 
 - [ ] 시행착오가 clarifications.md에 기록됨
 - [ ] 수정 주의 파일이 CLAUDE.md에 반영됨
-- [ ] 코드에 ⚠️ 주석 추가됨
+- [ ] 코드에 [주의] 주석 추가됨
 - [ ] 변경사항 커밋됨
 - [ ] 테스트 통과
 
@@ -170,6 +170,6 @@ const cookie = {
 - [ ] 시행착오 수집 완료
 - [ ] clarifications.md 업데이트
 - [ ] CLAUDE.md "수정 주의" 반영
-- [ ] 코드에 ⚠️ 주석 추가
+- [ ] 코드에 [주의] 주석 추가
 - [ ] 현재 작업 상태 업데이트
 - [ ] 다음 액션 안내
