@@ -84,9 +84,48 @@ description: 기술 계획 수립
 - 폴더 구조 제안
 - 주요 컴포넌트 설계
 - 데이터 흐름 설계
+- **폴더별 진입점 파일에 명세 링크 주석 계획**
 
 **코딩 스타일은 해당 언어/프레임워크의 표준 컨벤션을 자동 적용합니다.**
 (사용자가 별도 요청 시에만 변경)
+
+### 3-1. 폴더 진입점 명세 링크
+
+**중요**: 각 폴더의 진입점 파일(index.ts 등)에 명세 링크 주석을 추가합니다.
+
+**이유**:
+- 하위 폴더의 CLAUDE.md는 자동 로드되지 않음
+- 코드를 읽을 때 자연스럽게 관련 명세 확인 가능
+- 폴더의 역할과 설계 의도를 코드와 함께 관리
+
+**주석 형식**:
+```typescript
+/**
+ * 📋 설계: specs/{id}-{slug}/plan.md
+ *
+ * {폴더 설명}
+ * - {하위 모듈 1}: {역할}
+ * - {하위 모듈 2}: {역할}
+ */
+```
+
+**예시**:
+```typescript
+// src/auth/index.ts
+
+/**
+ * 📋 설계: specs/001-login/plan.md
+ *
+ * 인증 관련 모듈
+ * - useAuth: 인증 상태 관리 훅
+ * - authService: 로그인/로그아웃 API 호출
+ * - types: User, Session 타입 정의
+ */
+
+export * from './useAuth';
+export * from './authService';
+export * from './types';
+```
 
 ### 4. 파일 생성
 
@@ -119,6 +158,14 @@ src/
 └── types/          # 타입 정의
     └── auth.ts
 ```
+
+## 폴더 진입점 명세 링크
+
+| 폴더 | 진입점 파일 | 명세 링크 |
+|------|-------------|-----------|
+| src/components/ | index.ts | specs/001-login/plan.md |
+| src/hooks/ | index.ts | specs/001-login/plan.md |
+| src/services/ | index.ts | specs/001-login/plan.md |
 
 ## 주요 컴포넌트
 | 컴포넌트 | 역할 |
@@ -156,6 +203,7 @@ src/
 - [ ] spec.md 분석 완료
 - [ ] 기술 스택 결정 (선택지 비교 제공)
 - [ ] 아키텍처 설계
+- [ ] 폴더 진입점 명세 링크 계획
 - [ ] plan.md 생성
 - [ ] 프로젝트 원칙 검증
 - [ ] `/tasks` 안내

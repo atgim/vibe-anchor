@@ -70,11 +70,34 @@ red → green → refactor → commit → (다음 red)
 - [ ] 테스트가 통과하는가?
 - [ ] 가장 단순한 구현인가?
 - [ ] 리팩토링은 하지 않았는가?
+- [ ] 새 폴더 생성 시 진입점에 명세 링크 주석을 추가했는가?
 
 ### 수행 작업
 1. 최소한의 구현 코드 작성
-2. 테스트 실행하여 통과 확인
-3. `cycles/current.md` 업데이트:
+2. **새 폴더 생성 시**: 진입점 파일(index.ts)에 명세 링크 주석 추가
+3. 테스트 실행하여 통과 확인
+4. `cycles/current.md` 업데이트:
+
+### 새 폴더 생성 시 명세 링크 추가
+
+**plan.md에 계획된 대로** 폴더 진입점에 주석을 추가합니다:
+
+```typescript
+// src/auth/index.ts
+
+/**
+ * 📋 설계: specs/001-login/plan.md
+ *
+ * 인증 관련 모듈
+ * - useAuth: 인증 상태 관리 훅
+ * - authService: 로그인/로그아웃 API 호출
+ */
+
+export * from './useAuth';
+export * from './authService';
+```
+
+**이유**: 하위 폴더 CLAUDE.md는 자동 로드되지 않으므로, 코드 주석으로 명세 연결
 
 ```markdown
 ## 현재 상태
