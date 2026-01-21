@@ -49,6 +49,9 @@ description: 기능 명세 작성 (SDD)
 
 - **Functional Requirements**: 시스템이 해야 하는 것
 - **Non-Functional Requirements**: 성능, 보안, 접근성 등
+- **Constraints (제약사항)**: 반드시 지켜야 하는 제한
+  - 프로젝트 전체 제약: "IE11 지원", "한국어만"
+  - 기능 특수 제약: "오프라인 동작 필요"
 - **Out of Scope**: 이번에 하지 않는 것 (명시적으로!)
 
 ### 5. 파일 생성
@@ -93,6 +96,9 @@ specs/{id}-{slug}/
 
 ### Non-Functional
 - NFR-001: 응답 시간 < 200ms
+
+### Constraints (제약사항)
+- C-001: {지켜야 하는 제한}
 
 ## 범위 외 (Out of Scope)
 - {이번에 안 하는 것}
